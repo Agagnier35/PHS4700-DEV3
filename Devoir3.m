@@ -9,12 +9,19 @@ while(verifierCollisionIncertaine(voitureA, voitureB) == false || (norm(voitureA
     tempsEcoule = avancerLaScene(voitureA, voitureB, tempsEcoule,tb);    
 end
 
-while(verifierCollisionCertaine == false || (norm(voitureA.vitesse) < 0.01 && norm(voitureB.vitesse) < 0.01))%todo
+[isCollisionA, normaleA, pointCollisionA] = verifierCollisionCertaine(voitureA, voitureB);
+[isCollisionB, normaleB, pointCollisionB] = verifierCollisionCertaine(voitureA, voitureB);
+
+while(( isCollisionA == false && isCollisionB == false ) || (norm(voitureA.vitesse) < 0.01 && norm(voitureB.vitesse) < 0.01))
    tempsEcoule = avancerLaScene(voitureA, voitureB, tempsEcoule,tb);  
 end
 
 if((norm(voitureA.vitesse) < 0.01 && norm(voitureB.vitesse) < 0.01) == false)
-    calculerCollisionFinale(voitureA, voitureB);%TODO
+    if(isCollisionA == true)
+        calculerCollisionFinale(voitureA, voitureB, normaleA, pointCollisionA);%TODO
+    elseif(isCollisionB == true)
+        calculerCollisionFinale(voitureA, voitureB, normaleB, pointCollisionB);%TODO
+    end
 end
 
 

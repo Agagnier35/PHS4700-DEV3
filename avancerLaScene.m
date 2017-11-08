@@ -9,4 +9,6 @@ if(tempsEcoule > tb)
     rotationVoiture(voitureB, deltaT);
 end
 translationVoiture(voitureB, deltaT);
+voitureA.CalculerCoinsVoiture;
+voitureB.CalculerCoinsVoiture;
 tempsEcoule = tempsEcoule + deltaT;
