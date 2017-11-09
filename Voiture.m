@@ -21,26 +21,30 @@ classdef Voiture < handle
              obj.position = p;
              obj.vitesse = vi;
              obj.acceleration = 0;
-             obj.wAngulaire = w;
+             obj.wAngulaire = [0 0 w];
              obj.accAngulaire = 0;
              obj.angle = an;
+             obj.coins = [];
              obj.CalculerCoinsVoiture;
          end
          
          function CalculerCoinsVoiture(v)
-             coin1 = [v.position(1) - (v.longueur/2) v.position(2) - (v.hauteur/2)];
-             coin2 = [v.position(1) + (v.longueur/2) v.position(2) - (v.hauteur/2)];
-             coin3 = [v.position(1) + (v.longueur/2) v.position(2) + (v.hauteur/2)];
-             coin4 = [v.position(1) - (v.longueur/2) v.position(2) + (v.hauteur/2)];
+             v.coins = [];
+             coin1 = [v.position(1) - (v.longueur/2) v.position(2) - (v.largeur/2)];
+             coin2 = [v.position(1) + (v.longueur/2) v.position(2) - (v.largeur/2)];
+             coin3 = [v.position(1) + (v.longueur/2) v.position(2) + (v.largeur/2)];
+             coin4 = [v.position(1) - (v.longueur/2) v.position(2) + (v.largeur/2)];
              
-             matrixRot = rotz(v.angle);
+             coinsAR = [coin1; coin2; coin3; coin4];
+                         
+             matrixRot = rotz(rad2deg(v.angle));
+             matrixCenter = [v.position(1) v.position(2) 0].';
              
-             coin1R = coin1 * matrixRot;
-             coin2R = coin2 * matrixRot;
-             coin3R = coin3 * matrixRot;
-             coin4R = coin4 * matrixRot;
-             
-             v.coins = [coin1R coin2R coin3R coin4R];
+             for idx=1:size(coinsAR)
+                coin = [coinsAR(idx,:) 0].';
+                coinR = matrixRot * (coin - matrixCenter) + matrixCenter;
+                v.coins = [v.coins; coinR([1,2]).'];
+             end
          end
      end
 end
