@@ -1,5 +1,5 @@
 function tempsEcoule = avancerLaScene(voitureA, voitureB, tempsEcoule,tb)
-deltaT = 0.01;
+deltaT = 0.005;
 oldPositionA = voitureA.position;
 oldPositionB = voitureB.position;
 

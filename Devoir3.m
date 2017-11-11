@@ -5,35 +5,23 @@ angleB = trouverAngleVoiture(vbi);
 [voitureA, voitureB] = initialisationScene(rai, vai, rbi, vbi, angleA, angleB);
 
 tempsEcoule = 0;
-while(verifierCollisionIncertaine(voitureA, voitureB) == false && (norm(voitureA.vitesse) > 0.01 || norm(voitureB.vitesse) > 0.01))
-    tempsEcoule = avancerLaScene(voitureA, voitureB, tempsEcoule,tb);    
-end
+Coll =1;
 
-isCollisionA = false;
-isCollisionB = false;
-if((norm(voitureA.vitesse) > 0.01 || norm(voitureB.vitesse) > 0.01))
-    [isCollisionA, normaleA, pointCollisionA] = verifierCollisionCertaine(voitureA, voitureB);
-    [isCollisionB, normaleB, pointCollisionB] = verifierCollisionCertaine(voitureA, voitureB);
-end
-
-while((norm(voitureA.vitesse) > 0.01 || norm(voitureB.vitesse) > 0.01) && (isCollisionA == false && isCollisionB == false ))
-   tempsEcoule = avancerLaScene(voitureA, voitureB, tempsEcoule,tb); 
-   [isCollisionA, normaleA, pointCollisionA] = verifierCollisionCertaine(voitureA, voitureB);
-   [isCollisionB, normaleB, pointCollisionB] = verifierCollisionCertaine(voitureA, voitureB);
-end
-
-%--Si nous sommes sortis de la boucle qui avance la simulation a cause d'une
-%---collsion
-if(isCollisionA == true || isCollisionB == true )
-    if(isCollisionA == true)
-        calculerCollisionFinale(voitureA, voitureB, normaleA, pointCollisionA);
-        Coll = 0;
-    elseif(isCollisionB == true)
-        calculerCollisionFinale(voitureA, voitureB, normaleB, pointCollisionB);
-        Coll = 0;
+while(norm(voitureA.vitesse) > 0.01 || norm(voitureB.vitesse) > 0.01)
+    tempsEcoule = avancerLaScene(voitureA, voitureB, tempsEcoule,tb);
+    if(verifierCollisionIncertaine(voitureA, voitureB)==true)
+        [isCollisionA, normaleA, pointCollisionA] = verifierCollisionCertaine(voitureA, voitureB);
+        [isCollisionB, normaleB, pointCollisionB] = verifierCollisionCertaine(voitureA, voitureB);
+        if(isCollisionA == true)
+            calculerCollisionFinale(voitureA, voitureB, normaleA, pointCollisionA);
+            Coll = 0;
+            break;
+        elseif(isCollisionB == true)
+            calculerCollisionFinale(voitureA, voitureB, normaleB, pointCollisionB);
+            Coll = 0;
+            break;
+        end
     end
-else
-    Coll = 1;
 end
 
 
